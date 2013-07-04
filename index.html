@@ -5,6 +5,10 @@
    	<meta charset="utf-8">
 	<link rel="stylesheet" href="css/main.css">
 	<meta name="viewport" content="width=device-width, user-scalable=no">
+    <script type="text/javascript" src="./js/jquery-1.8.2.min.js" ></script>
+    <script type="text/javascript" src="/webinos.js"></script>
+    <script type="application/javascript" src="js/main.js"></script>    
+    <script type="application/javascript" src="js/dropDown.js"></script>    
 </head>
 <body>
 	<div class="header">
@@ -16,6 +20,11 @@
 		</div>
 	</div>
 	<div class="content">
+        <div class="serviceBox">
+            <span class="selected">webinos media-play services</span>
+            <span class="selectArrow">&#9660</span>
+            <ul class="selectOptions"></ul>
+        </div>
 		<div class="main-controls">
 			<div class="button arr-up"><!--↑--></div>
 			<div class="button arr-left"><!--←--></div>
@@ -29,15 +38,22 @@
 		<div class="prev-next">
 			<div class="button prev"><!--◁|--></div>
 			<div class="button next"><!--|▷--></div>
-		</div>
-		<div id="volume">
-			<div id="slider-left"></div>
-			<div id="slider-right"></div>
-			<div id="slider-handle"></div>
-		</div>
+		
+            <div id="volume">
+                <div id="slider-left"></div>
+                <div id="slider-right"></div>
+                <div id="slider-handle"></div>
+            </div>
+        </div>
+
+       <div class="filesBox">
+            <ul class="selectOptions_file"></ul>
+            <span class="selected_file">Choose file to play</span>
+            <span class="selectArrow_file">&#9650</span>           
+        </div>
 	</div>
 	<script type='application/javascript' src='js/fastclick.js'></script>
 	<script type="application/javascript" src="js/hammer.min.js"></script>
-	<script type="application/javascript" src="js/main.js"></script>
+	<script type="application/javascript" src="js/style.js"></script>
 </body>
 </html>
