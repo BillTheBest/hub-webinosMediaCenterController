@@ -1,5 +1,5 @@
 function enableSelectBoxes(){
-    $('div.selectBox').each(function(){
+    $('div.serviceBox').each(function(){
         $(this).children('span.selected').html($(this).children('ul.selectOptions').children('li.selectOption:first').html());
         $('input.price_values').attr('value',$(this).children('ul.selectOptions').children('li.selectOption:first').attr('data-value'));
         

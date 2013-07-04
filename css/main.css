@@ -323,9 +323,25 @@ body.nightmode .selectArrow {
     color: #000000;
 }
 
+body.nightmode .selected {
+    color: #ffffff;
+    background: #202020; 
+    border: 1px solid #606060;
+}
+
+body.nightmode .selectOptions {
+    color: #ffffff;
+    background: #202020;
+    border: 1px solid #606060;
+}
+
+body.nightmode #slider-right{
+    background: #606060;
+}
+
 
 /*findService box*/
-div.selectBox{
+div.serviceBox{
     position: absolute; 
     width: 90%;     
     top: 110px;
@@ -358,11 +374,12 @@ span.selected{
     background: linear-gradient(to bottom, #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); 
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=’#ffffff’, endColorstr=’#ffffff’,GradientType=0 ); 
     color: #000000;
+    z-index: 4;
 } 
 
 span.selectArrow{
     width: 3em;     
-    border: 1px solid; 
+    border: 1px solid #0079C2; 
     border-top-right-radius: 5px; 
     border-bottom-right-radius: 5px; 
     text-align: center; 
@@ -380,7 +397,7 @@ span.selectArrow, span.selected{
     position: relative; 
     float: left; 
     height: 30px; 
-    z-index: 1;
+    z-index: 4;
 } 
 
 ul.selectOptions{             
@@ -398,6 +415,7 @@ ul.selectOptions{
     list-style: none inside none;
     padding-left: 0;
     color: #000000;
+    z-index: 2;
 } 
 
 li.selectOption{
