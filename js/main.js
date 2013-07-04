@@ -7,7 +7,6 @@ function addFile(displayName){
      $('ul.selectOptions_file').css('top', $('ul.selectOptions_file').css('top').replace('px','')-30);     
 }
  
- 
 
 $(document).ready(function() {
      addService("Media-API #1");
