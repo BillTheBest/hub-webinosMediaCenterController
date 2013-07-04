@@ -7,8 +7,8 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no">
     <script type="text/javascript" src="./js/jquery-1.8.2.min.js" ></script>
     <script type="text/javascript" src="/webinos.js"></script>
-    <script type="application/javascript" src="js/main.js"></script>
-    <script type="application/javascript" src="js/dropDown.js"></script>
+    <script type="application/javascript" src="js/main.js"></script>    
+    <script type="application/javascript" src="js/dropDown.js"></script>    
 </head>
 <body>
 	<div class="header">
@@ -21,15 +21,9 @@
 	</div>
 	<div class="content">
         <div class="serviceBox">
-            <input type="hidden" value="data-audi" class="values">
             <span class="selected">webinos media-play services</span>
             <span class="selectArrow">&#9660</span>
-            <ul class="selectOptions">
-                <li class="selectOption" data-value="data-volvo">Volvo</li>
-                <li class="selectOption" data-value="data-saab">Saab</li>
-                <li class="selectOption" data-value="data-mercedes">Mercedes</li>
-                <li class="selectOption" data-value="data-audi">Audi</li>
-            </ul>
+            <ul class="selectOptions"></ul>
         </div>
 		<div class="main-controls">
 			<div class="button arr-up"><!--↑--></div>
@@ -52,18 +46,11 @@
             </div>
         </div>
 
-       <!--<div class="filesBox">
-            <input type="hidden" value="data-audi" class="values">
-            <span class="selected">webinos media-play services</span>
-            <span class="selectArrow">&#9660</span>
-            <ul class="selectOptions">
-                <li class="selectOption" data-value="data-volvo">Volvo</li>
-                <li class="selectOption" data-value="data-saab">Saab</li>
-                <li class="selectOption" data-value="data-mercedes">Mercedes</li>
-                <li class="selectOption" data-value="data-audi">Audi</li>
-            </ul>
-        </div>-->
-
+       <div class="filesBox">
+            <ul class="selectOptions_file"></ul>
+            <span class="selected_file">Choose files to play</span>
+            <span class="selectArrow_file">&#9650</span>           
+        </div>
 	</div>
 	<script type='application/javascript' src='js/fastclick.js'></script>
 	<script type="application/javascript" src="js/hammer.min.js"></script>
