@@ -1,4 +1,6 @@
 var mediaService = {};
+mediaService.currentlyPlaying = null;
+mediaService.exportedPath = null;
 
 function addService(displayName){
      $('ul.selectOptions').append('<li class="selectOption">' + displayName + '</li>');    
@@ -28,21 +30,24 @@ function fillServicesIn(){
                 service.bindService({
                     onBind: function(service){                        
                         mediaService.selected = service;
-                        console.log(service);
+                        console.debug("***Bound TO***")
+                        console.debug(service);
+                        console.debug("***************");
                         webinos.discovery.findServices(new ServiceType('http://webinos.org/api/file'), {                
                             onFound: function(fileService){            
-                                console.log("***Bound TO***");
-                                console.log(fileService.serviceAddress);
-                                console.log("***************");
+                                console.debug("***Bound TO***");
+                                console.debug(fileService.serviceAddress);
+                                console.debug("***************");
                                 if(fileService.serviceAddress === service.serviceAddress){
                                     fileService.bindService({
                                         onBind: function(fileService){
-                                            console.log("***Bound TO***");
-                                            console.log(fileService);
-                                            console.log("***************");
-                                            fileService.requestFileSystem(1, 1024,function(fileSystem){                                                                                                                                                
+                                            console.debug("***Bound TO***");
+                                            console.debug(fileService);
+                                            console.debug("***************");                                                                                        
+                                            fileService.requestFileSystem(1, 1024,function(fileSystem){  
+                                                mediaService.exportedPath = fileService.description.replace(fileSystem.name+': ' ,'')+'/';
                                                 loadDirectory(fileSystem.root);
-                                            },function(){console.log("errorCB");});
+                                            },function(){console.debug("errorCB");});
                                         }
                                     });
                                 }
@@ -63,7 +68,7 @@ $(document).ready(function() {
 
 
 
-function loadDirectory(directory){       
+function loadDirectory(directory){
     var reader = directory.createReader();
     
     var successCallback = function(entries) {
@@ -74,7 +79,7 @@ function loadDirectory(directory){
                 if (entry.isDirectory==false)
                     addFile(entry.name);
                 else
-                    console.log("found directory" + entry.name);
+                    console.debug("found directory" + entry.name);
             }
         ) 
     };   
