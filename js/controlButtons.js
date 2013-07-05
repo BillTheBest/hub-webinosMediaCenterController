@@ -38,7 +38,8 @@ $(document).ready(function() {
                 console.debug('Now playing ' + $('span.selected_file')[0].textContent);
                 mediaService.selected.play(mediaService.exportedPath+$('span.selected_file')[0].textContent, 
                     function(success){
-                        $('span.selected_file').text('Now playing ' + $('span.selected_file')[0].textContent);                    
+                        //successCB is called on stop.... WRONG!
+                        //$('span.selected_file').text('Now playing ' + $('span.selected_file')[0].textContent);                    
                         successCB(success);
                     }, 
                     function(error){
