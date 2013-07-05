@@ -339,6 +339,10 @@ body.nightmode #slider-right{
     background: #606060;
 }
 
+body.nightmode .stop_file{
+    color: #000000;
+}
+
 
 /*findService box*/
 div.serviceBox{
@@ -438,7 +442,7 @@ div.filesBox{
     position: absolute; 
     width: 90%;     
     bottom: 40px;
-    left: 10%;    
+    left: 5%;    
     display: inline-block; 
     cursor: default; 
     text-align: left; 
@@ -452,8 +456,8 @@ span.selected_file{
     text-indent: 10px; 
     border: 1px solid rgb(233, 233, 233); 
     border-right: none; 
-    border-top-left-radius: 5px; 
-    border-bottom-left-radius: 5px; 
+/*    border-top-left-radius: 5px; 
+    border-bottom-left-radius: 5px; */
     background: #f6f6f6; 
     overflow: hidden;
     font-weight: bold;
@@ -498,6 +502,7 @@ ul.selectOptions_file{
     width: 80%;     
     top: 0px;
     z-index: 3;  
+    left: 2.7em;
     border: 1px solid #ccc; 
     border-top-right-radius: 5px; 
     border-top-left-radius: 5px; 
@@ -524,5 +529,26 @@ li.selectOption_file{
 li.selectOption_file:hover{
     color: #ffffff;
     background: #0079C2;
+}
+
+
+span.stop_file{
+    position: relative; 
+    float: left;     
+    z-index: 4;    
+    width: 3em;  
+    height: 30px;
+    border: 1px solid #0079C2; 
+    border-top-left-radius: 5px; 
+    border-bottom-left-radius: 5px; 
+    text-align: center; 
+    font-size: 12px; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -o-user-select: none; 
+    user-select: none; 
+    background: #0079C2; 
+    color: #fff;
 }
 

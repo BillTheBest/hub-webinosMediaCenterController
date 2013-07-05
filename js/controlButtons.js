@@ -42,12 +42,19 @@ $(document).ready(function() {
     
     $('div.prev').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.increasePlaybackSpeed(successCB, errorCB);
+            mediaService.selected.decreasePlaybackSpeed(successCB, errorCB);
     });
     
     $('div.next').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.decreasePlaybackSpeed(successCB, errorCB);
+            mediaService.selected.increasePlaybackSpeed(successCB, errorCB);
+    });
+    
+    $('span.stop_file').click(function(){
+        if(typeof mediaService.selected !== 'undefined')
+            mediaService.selected.stop(function(success){
+//                 nowPlaying();
+            }, errorCB);
     });
     
     //volume

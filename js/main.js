@@ -27,13 +27,16 @@ function fillServicesIn(){
             $('#'+serviceID).click(function(){
                 $(this).parent().css('display','none');
                 $(this).parent().siblings('span.selected').html($(this).html());
-                                               
+                $('ul.selectOptions_file').empty();                               
+                $('ul.selectOptions_file').css('top', '0px');
+                $('span.selected_file').text('Choose media to play');
                 service.bindService({
                     onBind: function(service){                        
                         mediaService.selected = service;
                         console.debug("***Bound TO***")
                         console.debug(service);
                         console.debug("***************");
+                        
                         webinos.discovery.findServices(new ServiceType('http://webinos.org/api/file'), {                
                             onFound: function(fileService){            
                                 console.debug("***Bound TO***");
