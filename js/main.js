@@ -7,10 +7,11 @@ function addService(displayName){
 }
  
 function addFile(displayName){   
-    $('ul.selectOptions_file').append('<li id="' + displayName.split('.')[0] + '" class="selectOption_file" data="' + displayName + '">' + displayName + '</li>');
+     var fileID = displayName.replace(/[^a-z0-9]/gi, '_');
+     $('ul.selectOptions_file').append('<li id="' + fileID + '" class="selectOption_file" data="' + displayName + '">' + displayName + '</li>');
      $('ul.selectOptions_file').css('top', $('ul.selectOptions_file').css('top').replace('px','')-30);
      
-     $('#'+displayName.split('.')[0]).click(function(){
+     $('#'+fileID).click(function(){
          $(this).parent().css('display','none');
          $(this).parent().siblings('span.selected_file').html($(this).html());
      });
@@ -20,10 +21,10 @@ function addFile(displayName){
 function fillServicesIn(){
     webinos.discovery.findServices(new ServiceType('http://webinos.org/api/media'), {                
         onFound: function(service){            
+            var serviceID = service.serviceAddress.replace(/[^a-z0-9]/gi, '_');
             
-            $('ul.selectOptions').append('<li id="' + service.serviceAddress + '" class="selectOption" data="' + service + '">' + service.serviceAddress + '</li>');           
-            
-            $('#'+service.serviceAddress).click(function(){
+            $('ul.selectOptions').append('<li id="' + serviceID + '" class="selectOption" data="' + service + '">' + service.serviceAddress + '</li>');                                   
+            $('#'+serviceID).click(function(){
                 $(this).parent().css('display','none');
                 $(this).parent().siblings('span.selected').html($(this).html());
                                                
