@@ -29,10 +29,31 @@ $(document).ready(function() {
     });
     
     $('#play').click(function(){
-        if(typeof mediaService.selected !== 'undefined'){
-            console.debug('Now playing: ' + mediaService.exportedPath+$('span.selected_file')[0].textContent);
-            mediaService.selected.play(mediaService.exportedPath+$('span.selected_file')[0].textContent, successCB, errorCB);            
+        if(typeof mediaService.selected !== 'undefined'){                        
+            if($('span.selected_file')[0].textContent.lastIndexOf('Choose media to play') !== -1){
+                console.debug('Failed to play:  ' + $('span.selected_file')[0].textContent);
+                $('span.stop_file').trigger('click');                                
+            }
+            else {
+                console.debug('Now playing ' + $('span.selected_file')[0].textContent);
+                mediaService.selected.play(mediaService.exportedPath+$('span.selected_file')[0].textContent, 
+                    function(success){
+                        $('span.selected_file').text('Now playing ' + $('span.selected_file')[0].textContent);                    
+                        successCB(success);
+                    }, 
+                    function(error){
+                        removeClass(document.getElementById('play-pause'), 'nowplaying');
+                        App.nowPlaying = false;
+                        errorCB(error);
+                });            
+            }
         }
+        else{
+            console.debug('Play not initialized!');
+//             console.debug(document.getElementById('play-pause').className);
+//             document.getElementById('play-pause').className = 'button nowplaying';
+//             console.debug(document.getElementById('play-pause').className);
+        }            
     });
     
     $('#pause').click(function(){
@@ -42,12 +63,22 @@ $(document).ready(function() {
     
     $('div.prev').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.increasePlaybackSpeed(successCB, errorCB);
+            mediaService.selected.decreasePlaybackSpeed(successCB, errorCB);
     });
     
     $('div.next').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.decreasePlaybackSpeed(successCB, errorCB);
+            mediaService.selected.increasePlaybackSpeed(successCB, errorCB);
+    });
+    
+    $('span.stop_file').click(function(){
+        if(typeof mediaService.selected !== 'undefined')
+            mediaService.selected.stop(function(success){
+                $('span.selected_file').text('Choose media to play');                
+                removeClass(document.getElementById('play-pause'), 'nowplaying');
+                App.nowPlaying = false;                
+                successCB(success);
+            }, errorCB);
     });
     
     //volume

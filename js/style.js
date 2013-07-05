@@ -2,7 +2,7 @@ function removeClass(element, className) {
 	if(typeof element != 'object') element = document.getElementById(element);
 	var classString = element.className;
 	var newClassString = '';
-	var indexPos = classString.indexOf(className);
+	var indexPos = classString.indexOf(className);    
 	if(indexPos == -1) {
 		return;
 	} else if (indexPos == 0) {
@@ -10,21 +10,20 @@ function removeClass(element, className) {
 	} else {
 		newClassString = classString.substring(0, indexPos-1) + classString.substr(indexPos+className.length);
 	}
-
-	element.className = newClassString;
+	element.className = newClassString;    
 }
 
-function addClass(element, className) {
+function addClass(element, className) {    
 	if(typeof element != 'object') element = document.getElementById(element);
-	var classString = element.className;
+	var classString = element.className;            
 	if(classString != '') {
-		var indexPos = classString.indexOf(className);
+		var indexPos = classString.indexOf(className);           
 		if(indexPos == -1) {
 			element.className += ' '+className;
 		}
 	} else {
 		element.className = className;
-	}
+	}	
 }
 
 function getStyle(element,styleProp) {
