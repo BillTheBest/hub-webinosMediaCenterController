@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="http://webinos.org/WMCremote" version="0.1">
+  <name>webinos media center remote</name>
+  <description>
+    Remote control webinos media center.
+  </description>
+  <content src="index.html" />
+  <icon src="webinos.png" />
+  <author>Paolo Vergori (ISMB), Michele Morello (ISMB)</author>
+</widget>
+
