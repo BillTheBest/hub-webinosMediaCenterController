@@ -4,8 +4,7 @@ function enableServiceBoxes(){
             if($(this).parent().children('ul.selectOptions').css('display') == 'none'){
                 $(this).parent().children('ul.selectOptions').css('display','block');
             }
-            else
-            {
+            else{
                 $(this).parent().children('ul.selectOptions').css('display','none');
             }
         });
@@ -18,24 +17,23 @@ function enableServiceBoxes(){
 } 
 
 
-function enableFilesBoxes(){
-    $('div.filesBox').each(function(){      
-        $(this).children('span.selected_file,span.selectArrow_file').click(function(){
-            if($(this).parent().children('ul.selectOptions_file').css('display') == 'none'){
-                $(this).parent().children('ul.selectOptions_file').css('display','block');
-            }
-            else
-            {
-                $(this).parent().children('ul.selectOptions_file').css('display','none');
-            }
-        });
-        
+function enableFilesBoxes(){    
+    
+//     $('#filesPanel').trigger('mouseenter');
+    
+    $('ul.selectOptions_file').each(function(){                  
         $(this).find('li.selectOption_file').click(function(){
-            $(this).parent().css('display','none');
-            $(this).parent().siblings('span.selected_file').html($(this).html());
+
+//             $('#filesPanel').css('left','-330px');
+//             $('#filesPanel').mouseleave();
+//             $('#filesPanel').trigger('mouseleave');
+            
+            $('span.selected_file').data('selectedFile', $(this).html());
+            $('span.selected_file').text('Ready to play ' +  $('span.selected_file').data('selectedFile'));
+
         });
     });             
-} 
+}
 
 
 $(document).ready(function() {

@@ -240,7 +240,7 @@ body {
 	top: 75%;
 	width: 100%;
 	left: 0;
-	padding: 0 15px;
+	padding: 0 30px;
 	box-sizing: border-box;
 }
 .prev {
@@ -286,61 +286,6 @@ body {
 	background-color: #0079C2;
 	background-position: -520px 50%;
 	background-size: auto 20px;
-}
-
-
-/* night mode */
-.header, .content, .button, #play, #pause, #day, #night, #slider-handle{
-	-webkit-transition: background 0.4s, color 0.4s; /* "background" seemingly does not work with android 4.1.2, but the performance was crap anyway... */
-	-moz-transition: background 0.4s, color 0.4s;
-	-o-transition: background 0.4s, color 0.4s;
-	transition: background 0.4s, color 0.4s;
-}
-body.nightmode #day {display: block;}
-body.nightmode #night {display: none;}
-
-body.nightmode .content{
-	background: #000 url(../img/webinosBgDarkGray.png) 50% 50% no-repeat;
-	background-size: 200px;
-	color: #fff;
-}
-body.nightmode .header {
-	color: #fff;
-}
-body.nightmode .button {
-}
-
-body.nightmode .arr-up, body.nightmode .arr-down, body.nightmode .arr-left, body.nightmode .arr-right,
-body.nightmode #play, body.nightmode #pause, body.nightmode .prev, body.nightmode .next,
-body.nightmode #slider-handle {
-	background-image: url('../img/controls.png');
-}
-body.nightmode #day, body.nightmode #night {
-	background-image: url('../img/controls2.png');
-}
-
-body.nightmode .selectArrow, body.nightmode .selectArrow_file{
-    color: #000000;
-}
-
-body.nightmode .selected, body.nightmode .selected_file {
-    color: #ffffff;
-    background: #202020; 
-    border: 1px solid #606060;
-}
-
-body.nightmode .selectOptions, body.nightmode .selectOptions_file{
-    color: #ffffff;
-    background: #202020;
-    border: 1px solid #606060;
-}
-
-body.nightmode #slider-right{
-    background: #606060;
-}
-
-body.nightmode .stop_file{
-    color: #000000;
 }
 
 
@@ -442,13 +387,13 @@ div.filesBox{
     position: absolute; 
     width: 90%;     
     bottom: 40px;
-    left: 5%;    
+    left: 10%;    
     display: inline-block; 
     cursor: default; 
     text-align: left; 
     line-height: 30px; 
     clear: both; 
-    color: rgb(114, 97, 97);
+    color: rgb(114, 97, 97);         
 }
 
 span.selected_file{
@@ -456,8 +401,6 @@ span.selected_file{
     text-indent: 10px; 
     border: 1px solid rgb(233, 233, 233); 
     border-right: none; 
-/*    border-top-left-radius: 5px; 
-    border-bottom-left-radius: 5px; */
     background: #f6f6f6; 
     overflow: hidden;
     font-weight: bold;
@@ -474,7 +417,51 @@ span.selected_file{
     z-index: 4;
 } 
 
-span.selectArrow_file{
+span.stop_file, span.selected_file{
+    position: relative; 
+    float: left; 
+    height: 30px; 
+    z-index: 4;
+} 
+
+ul.selectOptions_file{             
+    position: relative; 
+    width: 100%;     
+    top: 0px;
+    z-index: 3;  
+    overflow: scroll;
+    background: rgb(250, 250, 250); 
+    padding-bottom: 2px; 
+    margin: 0;
+    list-style: none inside none;
+    padding-left: 0;
+    color: #000000;
+} 
+
+li.selectOption_file{
+    display: block; 
+    line-height: 30px; 
+    padding: 5px 0 5px 10px; 
+    list-style: none;
+    margin: 0;
+    
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;    
+    -o-user-select: none;
+    user-select: none;        
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    cursor: pointer;
+} 
+
+li.selectOption_file:hover{
+    color: #ffffff;
+    background: #0079C2;
+}
+
+
+span.stop_file{
     width: 3em;     
     border: 1px solid #0079C2; 
     border-top-right-radius: 5px; 
@@ -487,68 +474,6 @@ span.selectArrow_file{
     -o-user-select: none; 
     user-select: none; 
     background: #0079C2; 
-    color: #fff;
-} 
-
-span.selectArrow_file, span.selected_file{
-    position: relative; 
-    float: left; 
-    height: 30px; 
-    z-index: 4;
-} 
-
-ul.selectOptions_file{             
-    position: absolute; 
-    width: 80%;     
-    top: 0px;
-    z-index: 3;  
-    left: 2.7em;
-    border: 1px solid #ccc; 
-    border-top-right-radius: 5px; 
-    border-top-left-radius: 5px; 
-    overflow: hidden; 
-    background: rgb(250, 250, 250); 
-    padding-bottom: 2px; 
-    display: none;
-    margin: 0;
-    list-style: none inside none;
-    padding-left: 0;
-    color: #000000;
-    z-index: 2;    
-} 
-
-li.selectOption_file{
-    display: block; 
-    line-height: 20px; 
-    padding: 5px 0 5px 10px; 
-    list-style: none;
-    margin: 0;
-    
-} 
-
-li.selectOption_file:hover{
-    color: #ffffff;
-    background: #0079C2;
-}
-
-
-span.stop_file{
-    position: relative; 
-    float: left;     
-    z-index: 4;    
-    width: 3em;  
-    height: 30px;
-    border: 1px solid #0079C2; 
-    border-top-left-radius: 5px; 
-    border-bottom-left-radius: 5px; 
-    text-align: center; 
-    font-size: 12px; 
-    -webkit-user-select: none; 
-    -khtml-user-select: none; 
-    -moz-user-select: none; 
-    -o-user-select: none; 
-    user-select: none; 
-    background: #0079C2; 
-    color: #fff;
+    color: #fff;        
 }
 

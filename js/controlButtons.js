@@ -29,31 +29,35 @@ $(document).ready(function() {
     });
     
     $('#play').click(function(){
-        if(typeof mediaService.selected !== 'undefined'){                        
-            if($('span.selected_file')[0].textContent.lastIndexOf('Choose media to play') !== -1){
-                console.debug('Failed to play:  ' + $('span.selected_file')[0].textContent);
-                $('span.stop_file').trigger('click');                                
+        if(typeof mediaService.selected !== 'undefined'){                                    
+            if($('span.selected_file').data('selectedFile') === undefined){
+                console.debug('Failed to play:  ' + $('span.selected_file')[0].textContent);                
+                App.nowPlaying = true;
+                addClass(document.getElementById('play-pause'), 'nowplaying');                
             }
             else {
-                console.debug('Now playing ' + $('span.selected_file')[0].textContent);
-                mediaService.selected.play(mediaService.exportedPath+$('span.selected_file')[0].textContent, 
-                    function(success){
-                        //successCB is called on stop.... WRONG!
-                        //$('span.selected_file').text('Now playing ' + $('span.selected_file')[0].textContent);                    
-                        successCB(success);
-                    }, 
-                    function(error){
-                        removeClass(document.getElementById('play-pause'), 'nowplaying');
-                        App.nowPlaying = false;
-                        errorCB(error);
-                });            
+                if(mediaService.currentlyPlaying !== $('span.selected_file').data('selectedFile')){
+                    console.debug('trying to play file: ' + $('span.selected_file').data('selectedFile'));
+                    mediaService.selected.play(mediaService.exportedPath+$('span.selected_file').data('selectedFile'), 
+                        function(success){
+                            $('span.selected_file').text('Now playing ' + $('span.selected_file').data('selectedFile'));
+                            mediaService.currentlyPlaying = $('span.selected_file').data('selectedFile');
+                            successCB(success);                        
+                        }, 
+                        function(error){                        
+                            removeClass(document.getElementById('play-pause'), 'nowplaying');
+                            App.nowPlaying = false;
+                            errorCB('Play error: ' + error);
+                    });            
+                }
+                else
+                    mediaService.selected.playPause(successCB, errorCB);                    
             }
         }
         else{
-            console.debug('Play not initialized!');
-//             console.debug(document.getElementById('play-pause').className);
-//             document.getElementById('play-pause').className = 'button nowplaying';
-//             console.debug(document.getElementById('play-pause').className);
+            console.debug('Play has failed: no selected media to play');
+            App.nowPlaying = true;
+            addClass(document.getElementById('play-pause'), 'nowplaying');            
         }            
     });
     
@@ -75,7 +79,9 @@ $(document).ready(function() {
     $('span.stop_file').click(function(){
         if(typeof mediaService.selected !== 'undefined')
             mediaService.selected.stop(function(success){
-                $('span.selected_file').text('Choose media to play');                
+                $('span.selected_file').text('Choose media to play');
+                $('span.selected_file').removeData('selectedFile');
+                
                 removeClass(document.getElementById('play-pause'), 'nowplaying');
                 App.nowPlaying = false;                
                 successCB(success);
