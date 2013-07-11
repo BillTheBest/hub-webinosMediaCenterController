@@ -1,0 +1,85 @@
+@media  
+only screen and (-webkit-min-device-pixel-ratio: 1.3) and (orientation: portrait),
+only screen and (-o-min-device-pixel-ratio: 13/10) and (orientation: portrait),
+only screen and (min-resolution: 120dpi) and (orientation: portrait)
+{  
+    .header{
+       height: 75px;
+    }
+    div.serviceBox{
+        top: 95px; 
+    }
+    #filesPanel{   
+        top:75px;
+    }
+    .button {
+        width: 3em;
+        height: 3em;
+    }    
+    
+    .main-controls {
+        height: 200px;
+        width: 200px;
+        top: 50%;
+        left: 50%;
+        margin-top: -100px;
+        margin-left: -100px;
+    }
+    
+    .arr-up, .arr-down {
+        margin-left: -1.5em;
+    }
+    .arr-up {
+        background-position: -249px 50%;
+    }
+    .arr-down {
+        background-position: -315px 50%;
+    }
+    .arr-left, .arr-right {
+        margin-top: -1.5em;
+    }
+    .arr-left {
+        background-position: -382px 50%;
+    }
+    .arr-right {
+        background-position: -447px 50%;
+    }
+    
+    #play-pause {
+        height: 5em;
+        width: 5em;
+        margin-left: -2.5em;
+        margin-top: -2.5em;
+        border-radius: 2.5em;
+        padding-top: 1.5em;        
+    }
+    #play {
+        margin-left: -1em;
+    }
+    #pause {
+        margin-left: -0.8em;
+    }
+    .prev {
+        background-position: -120px 50%;
+    }
+    .next {
+        background-position: -181px 50%;
+    }
+    #filesPanel{
+        left: -230px;
+        width: 250px;
+    }
+    #filesPanel_hidden{
+        width:230px;
+    }
+    #night {
+        background-position: -581px 50%;
+    }
+    #day {
+        background-position: -517px 50%;
+    }
+    
+    .header, span.selected, span.selected_file, ul.selectOptions, ul.selectOptions_file{
+        font-size: 12px;
+    }
+}
