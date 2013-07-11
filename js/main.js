@@ -5,16 +5,18 @@ mediaService.exportedPath = null;
 function addService(displayName){
      $('ul.selectOptions').append('<li class="selectOption">' + displayName + '</li>');    
 }
- 
-function addFile(displayName){   
-     var fileID = displayName.replace(/[^a-z0-9]/gi, '_');
-     $('ul.selectOptions_file').append('<li id="' + fileID + '" class="selectOption_file" data="' + displayName + '">' + displayName + '</li>');
-     $('ul.selectOptions_file').css('top', $('ul.selectOptions_file').css('top').replace('px','')-30);
-     
-     $('#'+fileID).click(function(){
-         $(this).parent().css('display','none');
-         $(this).parent().siblings('span.selected_file').html($(this).html());
-     });
+
+
+function addFile(displayName){       
+    var fileID = displayName.replace(/[^a-z0-9]/gi, '_');    
+    $('ul.selectOptions_file').append('<li id="' + fileID + '" class="selectOption_file" data="' + displayName + '">' + displayName + '</li>');
+           
+    $('#'+fileID).click(function(){
+        $('span.selected_file').data('selectedFile', $(this).html());
+        $('span.selected_file').text('Ready to play ' +  $('span.selected_file').data('selectedFile'));         
+    });
+    
+//     $('#noMediaLabel').css('display','none');
 }
 
 
@@ -26,10 +28,8 @@ function fillServicesIn(){
             $('ul.selectOptions').append('<li id="' + serviceID + '" class="selectOption" data="' + service + '">' + service.serviceAddress + '</li>');                                   
             $('#'+serviceID).click(function(){
                 $(this).parent().css('display','none');
-                $(this).parent().siblings('span.selected').html($(this).html());
-                $('ul.selectOptions_file').empty();                               
-                $('ul.selectOptions_file').css('top', '0px');
-                $('span.selected_file').text('Choose media to play');
+                $(this).parent().siblings('span.selected').html($(this).html());             
+                
                 service.bindService({
                     onBind: function(service){                        
                         mediaService.selected = service;
@@ -47,7 +47,8 @@ function fillServicesIn(){
                                         onBind: function(fileService){
                                             console.debug("***Bound TO***");
                                             console.debug(fileService);
-                                            console.debug("***************");                                                                                        
+                                            console.debug("***************");                                                             
+                                            $('ul.selectOptions_file').empty();
                                             fileService.requestFileSystem(1, 1024,function(fileSystem){  
                                                 mediaService.exportedPath = fileService.description.replace(fileSystem.name+': ' ,'')+'/';
                                                 loadDirectory(fileSystem.root);

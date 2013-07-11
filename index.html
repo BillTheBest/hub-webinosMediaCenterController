@@ -4,6 +4,8 @@
 	<title>Remote</title>
    	<meta charset="utf-8">
 	<link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/sidePanel.css">
+    <link rel="stylesheet" href="css/nightMode.css">
 	<meta name="viewport" content="width=device-width, user-scalable=no">
     <script type="text/javascript" src="./js/jquery-1.8.2.min.js" ></script>
     <script type="text/javascript" src="/webinos.js"></script>
@@ -21,6 +23,17 @@
 		</div>
 	</div>
 	<div class="content">
+
+
+        <div id="filesPanel">
+            <div id="filesPanel_hidden">
+                <ul class="selectOptions_file">
+                   <li id="noMediaLabel" class="noMediaLabel">No media in the list..</li>
+                </ul>            
+            </div>
+            <div id="filesPanel_shown"> <p style="line-height: 8px;"><br></p>&#9776</div>
+        </div>
+
         <div class="serviceBox">
             <span class="selected">webinos media-play services</span>
             <span class="selectArrow">&#9660</span>
@@ -48,10 +61,8 @@
         </div>
 
        <div class="filesBox">
-            <ul class="selectOptions_file"></ul>
-            <span class="stop_file">&#9724</span>           
             <span class="selected_file">Choose media to play</span>
-            <span class="selectArrow_file">&#9650</span>           
+            <span class="stop_file">&#9724</span>           
         </div>
 	</div>
 	<script type='application/javascript' src='js/fastclick.js'></script>
