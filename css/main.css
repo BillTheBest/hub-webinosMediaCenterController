@@ -45,7 +45,7 @@ body {
 	z-index: -1;
 	padding-right: 10px;
 	font-size: 170%;
-	margin-left: 5px; /*27px;*/
+	margin-left: 5px;
 	margin-top: 5px;
 }
 
@@ -59,7 +59,7 @@ body {
 	font-size: 90%;
 	background: #fff url(../img/webinosBgLightGray.png) 50% 50% no-repeat;
 	background-size: 200px;
-	background-attachment: fixed;
+	background-attachment: fixed;   
 }
 
 .button {
