@@ -37,11 +37,19 @@ function fillServicesIn(){
                         console.debug(service);
                         console.debug("***************");
                         
+                        var callback = {};
+                        callback.onStop = function(tuaMamma){console.debug("\n\n\n");console.debug("Ricevuto STOP SIGNAL!!!!");};
+                        
+                        service.registerListeners(callback, function(success){console.debug('SuccessCB');}, function(error){console.err('errorCB');});
+                        //service.registerListeners({onStop: function(tuaMamma){console.debug("\n\n\n");console.debug("Ricevuto STOP SIGNAL!!!!");}}, function(success){console.debug('SuccessCB');}, function(error){console.err('errorCB');});
+                        
+                        
                         webinos.discovery.findServices(new ServiceType('http://webinos.org/api/file'), {                
                             onFound: function(fileService){            
                                 console.debug("***Bound TO***");
                                 console.debug(fileService.serviceAddress);
                                 console.debug("***************");
+                                
                                 if(fileService.serviceAddress === service.serviceAddress){
                                     fileService.bindService({
                                         onBind: function(fileService){
