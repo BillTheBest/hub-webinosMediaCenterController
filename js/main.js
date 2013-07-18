@@ -39,6 +39,7 @@ function fillServicesIn(){
                         
                         var callback = {};
                         callback.onStop = function(tuaMamma){console.debug("\n\n\n");console.debug("Ricevuto STOP SIGNAL!!!!");};
+                        callback.onPause = function(event){  App.nowPlaying = false; removeClass(document.getElementById('play-pause'), 'nowplaying');};
                         
                         service.registerListeners(callback, function(success){console.debug('SuccessCB');}, function(error){console.err('errorCB');});
                         //service.registerListeners({onStop: function(tuaMamma){console.debug("\n\n\n");console.debug("Ricevuto STOP SIGNAL!!!!");}}, function(success){console.debug('SuccessCB');}, function(error){console.err('errorCB');});
