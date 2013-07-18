@@ -136,7 +136,9 @@ only screen and (orientation: landscape)
         top: 20%;
         left: 30%;
 /*         max-width: 20px; */
+        max-height: 60%;
         height: 60%;
+        width: 10%;
         margin-left: 0%;
         box-sizing: auto;
         font-size: 0;
