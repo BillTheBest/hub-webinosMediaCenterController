@@ -1,6 +1,8 @@
 var mediaService = {};
 mediaService.currentlyPlaying = null;
 mediaService.exportedPath = null;
+mediaService.selected = null;
+mediaService.registeredListeners = false;
 
 function addService(displayName){
      $('ul.selectOptions').append('<li class="selectOption">' + displayName + '</li>');    
@@ -9,13 +11,8 @@ function addService(displayName){
 
 function addFile(displayName){       
     var fileID = displayName.replace(/[^a-z0-9]/gi, '_');    
-    $('ul.selectOptions_file').append('<li id="' + fileID + '" class="selectOption_file" data="' + displayName + '">' + displayName + '</li>');
-           
-    $('#'+fileID).click(function(){
-        $('span.selected_file').data('selectedFile', $(this).html());
-        $('span.selected_file').text('Ready to play ' +  $('span.selected_file').data('selectedFile'));         
-    });
-    
+    $('ul.selectOptions_file').append('<li id="' + fileID + '" class="selectOption_file" data="' + displayName + '">' + displayName + '</li>');    
+    $('#'+fileID).click(function(){setSelectedFile('Ready to play ', mediaService.exportedPath+$(this).html());});         
 //     $('#noMediaLabel').css('display','none');
 }
 
@@ -31,32 +28,46 @@ function fillServicesIn(){
                 $(this).parent().siblings('span.selected').html($(this).html());             
                 
                 service.bindService({
-                    onBind: function(service){                        
+                    onBind: function(service){  
+                        if(mediaService.registeredListeners === true){
+                            mediaService.registeredListeners = false;
+                            mediaService.selected.unregisterListenersOnLeave(successCB, errorCB);
+                        }
+                        
                         mediaService.selected = service;
-                        console.debug("***Bound TO***")
+                        console.debug("***Bound TO MEDIA***")
                         console.debug(service);
-                        console.debug("***************");
+                        console.debug("********************");
+                                              
+                        registerListeners();   
                         
-                        var callback = {};
-                        callback.onStop = function(tuaMamma){console.debug("\n\n\n");console.debug("Ricevuto STOP SIGNAL!!!!");};
-                        callback.onPause = function(event){  App.nowPlaying = false; removeClass(document.getElementById('play-pause'), 'nowplaying');};
-                        
-                        service.registerListeners(callback, function(success){console.debug('SuccessCB');}, function(error){console.err('errorCB');});
-                        //service.registerListeners({onStop: function(tuaMamma){console.debug("\n\n\n");console.debug("Ricevuto STOP SIGNAL!!!!");}}, function(success){console.debug('SuccessCB');}, function(error){console.err('errorCB');});
-                        
+                        mediaService.selected.isPlaying(function(status){
+                            console.debug("***Received player STATUS***");
+                            console.debug(status);
+                            console.debug("****************************");
+                            
+                            setVolumePosition(status.volume);
+                            mediaService.currentlyPlaying = status.currentMedia;
+                            
+                            if(status.isPlaying == false && status.currentMedia != null){    //onPause
+                                showPlay();                                
+                                setSelectedFile('Now playing ', mediaService.currentlyPlaying);
+                            }
+                            else if(status.isPlaying == true){   //playing
+                                showPause();                  
+                                setSelectedFile('Now playing ', mediaService.currentlyPlaying);
+                            }
+                        }, errorCB);
                         
                         webinos.discovery.findServices(new ServiceType('http://webinos.org/api/file'), {                
-                            onFound: function(fileService){            
-                                console.debug("***Bound TO***");
-                                console.debug(fileService.serviceAddress);
-                                console.debug("***************");
+                            onFound: function(fileService){                                            
                                 
                                 if(fileService.serviceAddress === service.serviceAddress){
                                     fileService.bindService({
                                         onBind: function(fileService){
-                                            console.debug("***Bound TO***");
+                                            console.debug("***Bound TO FILE***");
                                             console.debug(fileService);
-                                            console.debug("***************");                                                             
+                                            console.debug("*******************");                                                             
                                             $('ul.selectOptions_file').empty();
                                             fileService.requestFileSystem(1, 1024,function(fileSystem){  
                                                 mediaService.exportedPath = fileService.description.replace(fileSystem.name+': ' ,'')+'/';
@@ -78,6 +89,13 @@ function fillServicesIn(){
 
 $(document).ready(function() {
     webinos.session.addListener('registeredBrowser', fillServicesIn);
+    
+    //unregister listeners before closing or refreshing
+    window.addEventListener('beforeunload', function(event) {        
+        console.debug(event);
+        if(mediaService.selected != null)
+            mediaService.selected.unregisterListenersOnExit();
+    });
 });
 
 
@@ -103,3 +121,62 @@ function loadDirectory(directory){
     };    
     reader.readEntries(successCallback, errorCallback);
 }
+
+
+function registerListeners(){
+    var callback = {};
+    console.debug("***Registering Listeners for service***");
+    console.debug(mediaService.selected);
+    console.debug("***************************************");    
+    
+    callback.onPlay = function(event){
+        console.debug("Received event " + event.type + " : " + event.payload.currentMedia + " at volume " + event.payload.volume + "/30");
+        mediaService.currentlyPlaying = event.payload.currentMedia;
+        setVolumePosition(event.payload.volume);
+        showPause();        
+        setSelectedFile('Now playing ', mediaService.currentlyPlaying);
+    };
+    
+    callback.onStop = function(event){
+        console.debug("Received event " + event.type + " : " + event.payload);
+        showPlay();
+        $('span.selected_file').text('Choose media to play');
+    };
+    
+    callback.onPause = function(event){
+        console.debug("Received event " + event.type + " : " + event.payload);
+        if(App.nowPlaying === true)
+            showPlay();                    
+        else
+            showPause();
+    };
+    
+    callback.onEnd = function(event){        
+        console.debug("Received event " + event.type + " : " + event.payload);
+        mediaService.currentlyPlaying = null;
+        showPlay();
+        $('span.selected_file').text('Choose media to play');
+    };
+    
+    callback.onVolumeUP = function(event){
+        setVolumePosition(event.payload);
+        console.debug("Received event " + event.type + " : " + event.payload);
+    };
+    
+    callback.onVolumeDOWN = function(event){
+        setVolumePosition(event.payload);
+        console.debug("Received event " + event.type + " : " + event.payload);
+    };
+    
+    callback.onVolumeSet = function(event){
+        setVolumePosition(event.payload);
+        console.debug("Received event " + event.type + " : " + event.payload);
+    };
+        
+    mediaService.selected.registerListeners(callback, function(success){
+        mediaService.registeredListeners = true;
+        successCB(success);
+    }, errorCB);
+}
+
+

@@ -1,3 +1,32 @@
+function showPlay(){
+    var playPause = document.getElementById('play-pause');
+    
+    playPause.className = 'button';
+    App.nowPlaying = false;
+    console.debug("Setting application in show-play status");
+}
+
+function showPause(){
+    var playPause = document.getElementById('play-pause');
+    
+    playPause.className = 'button nowplaying';
+    App.nowPlaying = true;
+    console.debug("Setting application in show-pause status");
+}
+
+function setVolumePosition(steps){
+    App.volume = Math.round(steps * 100 / 30);
+    that.redraw();
+}
+
+function setSelectedFile(prefix ,fullPath){
+    /*this methods don't work because the exportedPath is not filled in when refreshing and a media is already playing
+    $('span.selected_file').text(prefix + fullPath.replace(mediaService.exportedPath ,''));        
+    $('span.selected_file').data('selectedFile', fullPath.replace(mediaService.exportedPath ,''));*/
+    $('span.selected_file').text(prefix + fullPath.split('/')[fullPath.split('/').length-1]);
+    $('span.selected_file').data('selectedFile', fullPath.split('/')[fullPath.split('/').length-1]);
+}
+
 function removeClass(element, className) {
 	if(typeof element != 'object') element = document.getElementById(element);
 	var classString = element.className;
@@ -60,15 +89,15 @@ document.getElementById('nightmode').onclick = function() {
 	}
 }
 
-document.getElementById('play-pause').onclick = function() {
-	if(App.nowPlaying) {
-		removeClass(this, 'nowplaying');
-		App.nowPlaying = false;
-	} else {
-		addClass(this, 'nowplaying');
-		App.nowPlaying = true;
-	}
-}
+// document.getElementById('play-pause').onclick = function() {
+// 	if(App.nowPlaying) {
+// 		removeClass(this, 'nowplaying');
+// 		App.nowPlaying = false;
+// 	} else {
+// 		addClass(this, 'nowplaying');
+// 		App.nowPlaying = true;
+// 	}
+// }
 
 var that;
 
