@@ -254,9 +254,7 @@ span.selected{
     width: 80%;    
     text-indent: 10px; 
     border: 1px solid rgb(233, 233, 233); 
-    border-right: none; 
-    border-top-left-radius: 5px; 
-    border-bottom-left-radius: 5px; 
+    border-right: none;     
     background: #f6f6f6; 
     overflow: hidden;
     font-weight: bold;
