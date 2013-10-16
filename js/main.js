@@ -18,15 +18,10 @@ function addFile(displayName){
 
 
 function fillServicesIn(){
-    webinos.discovery.findServices(new ServiceType('http://webinos.org/api/media'), {                
+    webinos.discovery.findServices(new ServiceType('http://webinos.org/api/mediaplay'), {                
         onFound: function(service){            
-//             var serviceID = service.serviceAddress.replace(/[^a-z0-9]/gi, '_');
+            //var serviceID = service.serviceAddress.replace(/[^a-z0-9]/gi, '_');
             var serviceID = service.id;
-//             console.debug(service);
-//             console.debug(webinos.session);
-//             console.debug(webinos.session.getPZPId());
-//             console.debug(webinos.session.getConnectedPzp());
-//             console.debug(webinos.session.getConnectedDevices());
             
             $('ul.selectOptions').append('<li id="' + serviceID + '" class="selectOption" data="' + service + '">' + service.serviceAddress + ' ' + service.displayName + '</li>');                                   
             $('#'+serviceID).click(function(){
@@ -37,7 +32,7 @@ function fillServicesIn(){
                     onBind: function(service){  
                         if(mediaService.registeredListeners === true){
                             mediaService.registeredListeners = false;
-                            mediaService.selected.unregisterListenersOnLeave(successCB, errorCB);
+                            mediaService.selected.removeAllListeners(successCB, errorCB);
                         }
                         
                         mediaService.selected = service;
@@ -137,7 +132,7 @@ function fillServicesIn(){
                             };
                             ws.onmessage = function(evt){
                                 var data = JSON.parse(evt.data);
-                                if(data.id !== undefined){
+                                if(data.id !== undefined && data.result !== undefined){
                                     console.debug('----onMessage---');
                                     console.debug(data);
                                     console.debug(data.result.files);
@@ -149,6 +144,13 @@ function fillServicesIn(){
                                     for(var i=0;i<data.result.files.length;i++)
                                         if(data.result.files[i].filetype === 'file')
                                             addFile(data.result.files[i].label);
+                                }
+                                if(data.error){
+                                    console.debug('----onError---');
+                                    console.debug(data.error);
+                                    console.debug('----------------');
+                                    $('ul.selectOptions_file').empty();
+                                    $('ul.selectOptions_file').append('<li id="-1" class="selectOption_file" data="">XBMC files directory not supported</li>');
                                 }
                                 if(data.id == id){
                                     delete ws;
@@ -175,8 +177,6 @@ function fillServicesIn(){
 }
 
 
-function callback(data, dataType){console.debug("TUA MAMMA"); console.debug(data); console.debug(dataType);};
-
 $(document).ready(function() {
     webinos.session.addListener('registeredBrowser', fillServicesIn);
     
@@ -184,7 +184,7 @@ $(document).ready(function() {
     window.addEventListener('beforeunload', function(event) {        
         console.debug(event);
         if(mediaService.selected != null)
-            mediaService.selected.unregisterListenersOnExit();
+            mediaService.selected.removeAllListeners();
     });
 });
 
@@ -218,48 +218,38 @@ function registerListeners(){
     console.debug(mediaService.selected);
     console.debug("***************************************");    
     
-    callback.onPlay = function(event){
-        console.debug("Received event " + event.type + " : " + event.payload.currentMedia + " at volume " + event.payload.volume + "/30");
-        mediaService.currentlyPlaying = event.payload.currentMedia;
-        setVolumePosition(event.payload.volume);
+    callback.onPlay = function(playStatus){
+        console.debug("Received event onPlay. Player is playing media " + playStatus.currentMedia + " at volume " + playStatus.volume + "/30");
+        mediaService.currentlyPlaying = playStatus.currentMedia;
+        setVolumePosition(playStatus.volume);
         showPause();        
         setSelectedFile('Now playing ', mediaService.currentlyPlaying);
     };
     
-    callback.onStop = function(event){
-        console.debug("Received event " + event.type + " : " + event.payload);
+    callback.onStop = function(){
+        console.debug("Received event onStop");
         showPlay();
         $('span.selected_file').text('Choose media to play');
     };
     
-    callback.onPause = function(event){
-        console.debug("Received event " + event.type + " : " + event.payload);
+    callback.onPause = function(){
+        console.debug("Received event onPause");
         if(App.nowPlaying === true)
             showPlay();                    
         else
             showPause();
     };
     
-    callback.onEnd = function(event){        
-        console.debug("Received event " + event.type + " : " + event.payload);
+    callback.onEnd = function(){        
+        console.debug("Received event onEnd");
         mediaService.currentlyPlaying = null;
         showPlay();
         $('span.selected_file').text('Choose media to play');
-    };
+    };    
     
-    callback.onVolumeUP = function(event){
-        setVolumePosition(event.payload);
-        console.debug("Received event " + event.type + " : " + event.payload);
-    };
-    
-    callback.onVolumeDOWN = function(event){
-        setVolumePosition(event.payload);
-        console.debug("Received event " + event.type + " : " + event.payload);
-    };
-    
-    callback.onVolumeSet = function(event){
-        setVolumePosition(event.payload);
-        console.debug("Received event " + event.type + " : " + event.payload);
+    callback.onVolume = function(volume){
+        setVolumePosition(volume);
+        console.debug("Received event onVolume. Volume set at " + volume);
     };
         
     mediaService.selected.registerListeners(callback, function(success){
