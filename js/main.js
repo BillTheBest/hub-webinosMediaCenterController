@@ -252,7 +252,7 @@ function registerListeners(){
         console.debug("Received event onVolume. Volume set at " + volume);
     };
         
-    mediaService.selected.registerListeners(callback, function(success){
+    mediaService.selected.addListener(callback, function(success){
         mediaService.registeredListeners = true;
         successCB(success);
     }, errorCB);
