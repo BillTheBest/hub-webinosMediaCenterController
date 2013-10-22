@@ -10,22 +10,22 @@ function errorCB(error){
 $(document).ready(function() {
     $('div.arr-up').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.bigStepforward(successCB, errorCB);
+            mediaService.selected.seek("FORWARD_BIG", successCB, errorCB);
     });
     
     $('div.arr-down').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.bigStepback(successCB, errorCB);
+            mediaService.selected.seek("BACKWARD_BIG", successCB, errorCB);
     });
     
     $('div.arr-left').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.stepback(successCB, errorCB);
+            mediaService.selected.seek("BACKWARD", successCB, errorCB);
     });
     
     $('div.arr-right').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.stepforward(successCB, errorCB);
+            mediaService.selected.seek("FORWARD", successCB, errorCB);
     });
     
     $('#play').click(function(){                
@@ -73,12 +73,12 @@ $(document).ready(function() {
     
     $('div.prev').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.decreasePlaybackSpeed(successCB, errorCB);
+            mediaService.selected.setSpeed("SLOWER", successCB, errorCB);
     });
     
     $('div.next').click(function(){
         if(typeof mediaService.selected !== 'undefined')
-            mediaService.selected.increasePlaybackSpeed(successCB, errorCB);
+            mediaService.selected.setSpeed("FASTER", successCB, errorCB);
     });
     
     $('span.stop_file').click(function(){

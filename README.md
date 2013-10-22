@@ -3,9 +3,11 @@ hub-webinosMediaCenterController
 
 
 Media center controller Hub with functionality to provide 
-- discover webinos-media API
-- implement control functionality for OMX player
+- use webinos-media API
+- implements control functionality for OMX player
+- implements control functionality for Mplayer
+- implements control functionality for Windows Media Player
+- implements control functionality for XBMC via UPnP
+- implements control functionality for Android player
 
 
-Hardware: 
-- Rasperry PI with OMXplayer must be webinos-enabled
