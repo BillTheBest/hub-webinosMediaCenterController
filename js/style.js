@@ -1,6 +1,6 @@
 function showPlay(){
     var playPause = document.getElementById('play-pause');
-    
+
     playPause.className = 'button';
     App.nowPlaying = false;
     console.debug("Setting application in show-play status");
@@ -8,7 +8,7 @@ function showPlay(){
 
 function showPause(){
     var playPause = document.getElementById('play-pause');
-    
+
     playPause.className = 'button nowplaying';
     App.nowPlaying = true;
     console.debug("Setting application in show-pause status");
@@ -21,49 +21,52 @@ function setVolumePosition(steps){
 
 function setSelectedFile(prefix ,fullPath){
     /*this methods don't work because the exportedPath is not filled in when refreshing and a media is already playing
-    $('span.selected_file').text(prefix + fullPath.replace(mediaService.exportedPath ,''));        
+    $('span.selected_file').text(prefix + fullPath.replace(mediaService.exportedPath ,''));
     $('span.selected_file').data('selectedFile', fullPath.replace(mediaService.exportedPath ,''));*/
-    $('span.selected_file').text(prefix + fullPath.split('/')[fullPath.split('/').length-1]);
-    $('span.selected_file').data('selectedFile', fullPath.split('/')[fullPath.split('/').length-1]);
+    if(prefix.indexOf('streaming') != -1)
+      $('span.selected_file').text(prefix + fullPath.split('&')[fullPath.split('&').length-1]);
+    else
+      $('span.selected_file').text(prefix + fullPath.split('/')[fullPath.split('/').length-1]);
+    $('span.selected_file').data('selectedFile', fullPath);
 }
 
 function removeClass(element, className) {
-	if(typeof element != 'object') element = document.getElementById(element);
-	var classString = element.className;
-	var newClassString = '';
-	var indexPos = classString.indexOf(className);    
-	if(indexPos == -1) {
-		return;
-	} else if (indexPos == 0) {
-		newClassString = classString.substring(0, indexPos) + classString.substr(indexPos+className.length);
-	} else {
-		newClassString = classString.substring(0, indexPos-1) + classString.substr(indexPos+className.length);
-	}
-	element.className = newClassString;    
+   if(typeof element != 'object') element = document.getElementById(element);
+   var classString = element.className;
+   var newClassString = '';
+   var indexPos = classString.indexOf(className);
+   if(indexPos == -1) {
+      return;
+   } else if (indexPos == 0) {
+      newClassString = classString.substring(0, indexPos) + classString.substr(indexPos+className.length);
+   } else {
+      newClassString = classString.substring(0, indexPos-1) + classString.substr(indexPos+className.length);
+   }
+   element.className = newClassString;
 }
 
-function addClass(element, className) {    
-	if(typeof element != 'object') element = document.getElementById(element);
-	var classString = element.className;            
-	if(classString != '') {
-		var indexPos = classString.indexOf(className);           
-		if(indexPos == -1) {
-			element.className += ' '+className;
-		}
-	} else {
-		element.className = className;
-	}	
+function addClass(element, className) {
+   if(typeof element != 'object') element = document.getElementById(element);
+   var classString = element.className;
+   if(classString != '') {
+      var indexPos = classString.indexOf(className);
+      if(indexPos == -1) {
+         element.className += ' '+className;
+      }
+   } else {
+      element.className = className;
+   }
 }
 
 function getStyle(element,styleProp) {
-	if(typeof element != 'object') element = document.getElementById(element);
-	var style;
-	if (element.currentStyle) {
-		style = element.currentStyle[styleProp];
-	} else if (window.getComputedStyle) {
-		style = document.defaultView.getComputedStyle(element,null).getPropertyValue(styleProp);
-	}
-	return style;
+   if(typeof element != 'object') element = document.getElementById(element);
+   var style;
+   if (element.currentStyle) {
+      style = element.currentStyle[styleProp];
+   } else if (window.getComputedStyle) {
+      style = document.defaultView.getComputedStyle(element,null).getPropertyValue(styleProp);
+   }
+   return style;
 }
 
 
@@ -80,51 +83,51 @@ window.addEventListener('load', function() {
 }, false);
 
 document.getElementById('nightmode').onclick = function() {
-	if(App.nightmode) {
-		removeClass(document.body, 'nightmode');
-		App.nightmode = false;
-	} else {
-		addClass(document.body, 'nightmode');
-		App.nightmode = true;
-	}
+   if(App.nightmode) {
+      removeClass(document.body, 'nightmode');
+      App.nightmode = false;
+   } else {
+      addClass(document.body, 'nightmode');
+      App.nightmode = true;
+   }
 }
 
 // document.getElementById('play-pause').onclick = function() {
-// 	if(App.nowPlaying) {
-// 		removeClass(this, 'nowplaying');
-// 		App.nowPlaying = false;
-// 	} else {
-// 		addClass(this, 'nowplaying');
-// 		App.nowPlaying = true;
-// 	}
+//    if(App.nowPlaying) {
+//       removeClass(this, 'nowplaying');
+//       App.nowPlaying = false;
+//    } else {
+//       addClass(this, 'nowplaying');
+//       App.nowPlaying = true;
+//    }
 // }
 
 var that;
 
 function VolumeSlider() {
-	that = this;
+   that = this;
 
     that.container = document.getElementById('volume');
-	that.volumeActiveBar = document.getElementById('slider-left');
-	that.volumeInactiveBar = document.getElementById('slider-right');
-	that.volumeHandle = document.getElementById('slider-handle');
+   that.volumeActiveBar = document.getElementById('slider-left');
+   that.volumeInactiveBar = document.getElementById('slider-right');
+   that.volumeHandle = document.getElementById('slider-handle');
 
-	that.container_width = 0;
+   that.container_width = 0;
     that.container_height = 0;
-	that.current_pos = 0;
-	that.step = 0; //pixels for one percent
+   that.current_pos = 0;
+   that.step = 0; //pixels for one percent
 
-	
-	
-	that.init = function() {
-		that.setDimensions();       
-	};
 
-	that.setDimensions = function() {
+
+   that.init = function() {
+      that.setDimensions();
+   };
+
+   that.setDimensions = function() {
         console.log("setDimensions setDimensions");
-		if(that.container_width != that.container.offsetWidth || that.container_height != that.container.offsetHeight) 
+      if(that.container_width != that.container.offsetWidth || that.container_height != that.container.offsetHeight)
         {
-			that.container_width = that.container.offsetWidth;
+         that.container_width = that.container.offsetWidth;
             that.container_height = that.container.offsetHeight;
             console.log("width " + that.container_width + "\n height " + that.container_height);
             //that.step = that.container_width / 100 > that.container_height / 100 ? that.container_width / 100 : that.container_height / 100;
@@ -156,29 +159,29 @@ function VolumeSlider() {
                 that.current_pos = that.step*App.volume;
                 that.redraw();
             }
-		}
-	};
+      }
+   };
 
-	that.setSliderPos = function(move) {
-		var newPos = that.current_pos + move;
-		if(newPos < 0) { //skipped those two for a more natural behaviour
+   that.setSliderPos = function(move) {
+      var newPos = that.current_pos + move;
+      if(newPos < 0) { //skipped those two for a more natural behaviour
             //newPos = 0;
         } else if(newPos > that.container_width && newPos > that.container_height) {
-			//newPos = that.container_width;
-		} else {
-			var check = newPos - (App.volume*that.step);
-			if(check < -(that.step)) {
-				App.volume -= Math.round(-(check)/that.step);
-			} else if(check > that.step) {
-				App.volume += Math.round(check/that.step);
-			}
-			that.redraw();
-		}
+         //newPos = that.container_width;
+      } else {
+         var check = newPos - (App.volume*that.step);
+         if(check < -(that.step)) {
+            App.volume -= Math.round(-(check)/that.step);
+         } else if(check > that.step) {
+            App.volume += Math.round(check/that.step);
+         }
+         that.redraw();
+      }
 
-		that.current_pos = newPos;
-	}
+      that.current_pos = newPos;
+   }
 
-	that.redraw = function() {
+   that.redraw = function() {
         if(that.container_width > that.container_height)
         {
             //console.log("PORTRAIT");
@@ -194,28 +197,28 @@ function VolumeSlider() {
             that.volumeActiveBar.style.top = (100-App.volume)+'%';
             that.volumeInactiveBar.style.height = (100-App.volume)+'%';
         }
-	}
+   }
 
-	function handleHammer(ev) {
-		//console.log(ev);
-		// disable browser scrolling
-		ev.gesture.preventDefault();
+   function handleHammer(ev) {
+      //console.log(ev);
+      // disable browser scrolling
+      ev.gesture.preventDefault();
 
-		switch(ev.type) {
-			case 'touch':
-				//that.setDimensions();
-				that.current_pos = that.step*App.volume;
-				that.oldDeltaX = 0;
+      switch(ev.type) {
+         case 'touch':
+            //that.setDimensions();
+            that.current_pos = that.step*App.volume;
+            that.oldDeltaX = 0;
                 that.oldDeltaY = 0;
-				break;
-			case 'dragright':
-			case 'dragleft':
+            break;
+         case 'dragright':
+         case 'dragleft':
                 if(that.container_width > that.container_height)
                 {
                     that.setSliderPos(ev.gesture.deltaX - that.oldDeltaX);
                     that.oldDeltaX = ev.gesture.deltaX;
                 }
-				break;
+            break;
             case 'dragup':
             case 'dragdown':
                 if (that.container_height > that.container_width)  //da migliorare
@@ -224,10 +227,10 @@ function VolumeSlider() {
                     that.oldDeltaY = ev.gesture.deltaY;
                 }
                 break;
-		}
-	}
+      }
+   }
 
-	Hammer(this.volumeHandle, { drag_lock_to_axis: true, drag_min_distance: 3 }).on("touch dragleft dragright dragup dragdown", handleHammer);
+   Hammer(this.volumeHandle, { drag_lock_to_axis: true, drag_min_distance: 3 }).on("touch dragleft dragright dragup dragdown", handleHammer);
 }
 
 var volSlider = new VolumeSlider().init();
