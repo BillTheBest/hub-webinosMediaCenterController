@@ -24,8 +24,8 @@ function fillServicesIn(){
         onFound: function(service){
             var serviceID = service.id;
 
-            $('ul.selectOptions').append('<li id="' + serviceID + '" class="selectOption" data="' + service + '">' + service.serviceAddress + ' ' + service.displayName + '</li>');
-            $('#'+serviceID).click(function(){
+            $('ul.selectOptions').append('<li id="' + service.serviceAddress.replace(/[^a-z0-9]/gi, '_') + service.displayName.replace(/[^a-z0-9]/gi, '_') + '" class="selectOption" data="' + service + '">' + service.serviceAddress + ' ' + service.displayName + '</li>');
+            $('#'+ service.serviceAddress.replace(/[^a-z0-9]/gi, '_') + service.displayName.replace(/[^a-z0-9]/gi, '_')).click(function(){
                 $(this).parent().css('display','none');
                 $(this).parent().siblings('span.selected').html($(this).html());
 
